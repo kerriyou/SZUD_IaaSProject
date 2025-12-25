@@ -98,7 +98,7 @@ class VM {
 private:
     string ime; bool radi = false; string ip = "Nema"; Skladiste* disk = nullptr; int ramMemorija; int cpuJezgra;
 public:
-    VM(string n) : ime(n), ramMemorija(r), cpuJezgra(c) {}
+    VM(string n, int r, int c) : ime(n), ramMemorija(r), cpuJezgra(c) {}
     string uzmiIme() const { return ime; }
     string uzmiIP() const { return ip; }
     bool daLiRadi() const { return radi; } 

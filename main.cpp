@@ -96,9 +96,9 @@ public:
 //////////////////////////////////////////////////////////
 class VM { 
 private:
-    string ime; bool radi = false; string ip = "Nema"; Skladiste* disk = nullptr; int ramMemorija; int cpuJezgra;
+    string ime; bool radi = false; string ip = "Nema"; Skladiste* disk = nullptr; string operativniSistem; int ramMemorija; int cpuJezgra;
 public:
-    VM(string n, int r, int c) : ime(n), ramMemorija(r), cpuJezgra(c) {}
+    VM(string n, string os, int r, int c): ime(n), operativniSistem(os), ramMemorija(r), cpuJezgra(c) {}
     string uzmiIme() const { return ime; }
     string uzmiIP() const { return ip; }
     bool daLiRadi() const { return radi; } 
@@ -127,7 +127,7 @@ public:
     void ukloniIP() { ip = "Nema"; }
 
     void informacije() const {
-        cout << "\n=== VM INFO: " << ime << " (" << ramMemorija << "GB RAM, " << cpuJezgra << " vCPU) ===\n";
+        cout << "\n=== VM INFO: " << ime << " | OS: " << operativniSistem  << " | HW: " << ramMemorija << "GB RAM, " << cpuJezgra << " vCPU ===\n";
         cout << "Status: " << (radi ? "Radi" : "Stop") << "\n";
         cout << "IP adresa: " << ip << "\n";
         cout << "Prikaceni Disk: " << (disk ? disk->uzmiID() : "Nema") << "\n";
@@ -147,7 +147,7 @@ public:
     }
 
     VM* kreirajVM(string n) {
-        auto v = new VM(n, 4, 2); vmVek.push_back(v);
+        auto v = new VM(n, "linux",4,2); vmVek.push_back(v);
         cout << "[Oblak] Kreirana VM: " << n << "\n"; return v;
     }
 

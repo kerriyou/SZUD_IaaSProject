@@ -147,7 +147,7 @@ public:
     }
 
     VM* kreirajVM(string n) {
-        auto v = new VM(n); vmVek.push_back(v);
+        auto v = new VM(n, "linux",4,2); vmVek.push_back(v);
         cout << "[Oblak] Kreirana VM: " << n << "\n"; return v;
     }
 

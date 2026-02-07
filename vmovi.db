@@ -1,0 +1,12 @@
+12|Netcup-VPS-300|linux|4|2|4|Mateja
+11|Netcup-VPS-200|linux|4|2|4|sistem
+10|Netcup-VPS-100|linux|4|2|4|sistem
+9|Hetzner-CX31|linux|4|2|3|sistem
+8|Hetzner-CX21|linux|4|2|3|sistem
+7|Hetzner-CX11|linux|4|2|3|sistem
+6|GCP-Cloud-Run|linux|4|2|2|sistem
+5|GCP-Kubernetes-Node|linux|4|2|2|sistem
+4|GCP-VM-Standard|linux|4|2|2|sistem
+3|Oracle-App-Server|linux|4|2|1|sistem
+2|Oracle-DB-Instance|linux|4|2|1|sistem
+1|Oracle-VM-Basic|linux|4|2|1|sistem

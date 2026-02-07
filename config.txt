@@ -1,0 +1,17 @@
+# Konfiguracioni fajl za IaaS sistem
+
+# Fajlovi za cuvanje podataka
+server_fajl = serveri.db
+vm_fajl = vmovi.db
+korisnici_fajl = korisnici.db
+
+# Podrazumevane vrednosti za VM
+default_os = linux
+default_ram = 4
+default_cpu = 2
+default_disk_size = 100
+
+# Mrežne postavke
+ip_pocetak = 192.168.1.
+ip_pocetni = 10
+ip_krajnji = 250

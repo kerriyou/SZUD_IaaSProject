@@ -1,45 +1,66 @@
-name: Auto-Build Windows Release
+name: Auto-Build Windows Release - Dual Compiler
 
 on:
   push:
     tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+' # Podrzava tagove u formatu vX.Y.Z
+      - 'v[0-9]+.[0-9]+.[0-9]+'
 
-# Dodavanje eksplicitnih dozvola (Permissions) za GITHUB_TOKEN
-# Ovo rešava grešku "Resource not accessible by integration" za Releases.
 permissions:
-  contents: write  # Potrebno za kreiranje i upload Releases
-  packages: none # Nije potrebno, ali dobra praksa je eksplicitno definisati
+  contents: write
 
 jobs:
   build-and-release:
     runs-on: windows-latest
     
     steps:
-    - name: Preuzmi kod (Checkout)
+    - name: Preuzmi kod
       uses: actions/checkout@v4
 
-    - name: Kompajliranje C++ koda (g++)
-      run: g++ main.cpp -o IaasSimulator.exe -static-libgcc -static-libstdc++
+    - name: Kompajliraj sa MinGW
+      run: |
+        g++ main.cpp -o IaasSimulator-mingw.exe -static -static-libgcc -static-libstdc++ -std=c++17 -O2
       shell: bash
 
-    - name: Postavljanje taga za Release
+    - name: Kompajliraj sa MSVC
+      run: |
+        # Pokreni Visual Studio Command Prompt i kompajliraj
+        call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+        cl /EHsc /std:c++17 /O2 /Fe:IaasSimulator-msvc.exe main.cpp
+      shell: cmd
+
+    - name: Kreiraj README
+      run: |
+        @echo # IaaS Simulator - Windows Build > README-release.txt
+        @echo. >> README-release.txt
+        @echo ## Dostupne verzije: >> README-release.txt
+        @echo. >> README-release.txt
+        @echo ### 1. IaasSimulator-mingw.exe >> README-release.txt
+        @echo - Kompajler: MinGW/G++ (statički linkovano) >> README-release.txt
+        @echo - Zavisnosti: NEMA - radi svuda >> README-release.txt
+        @echo. >> README-release.txt
+        @echo ### 2. IaasSimulator-msvc.exe >> README-release.txt
+        @echo - Kompajler: Microsoft Visual C++ >> README-release.txt
+        @echo - Zavisnosti: VC++ Redistributable >> README-release.txt
+      shell: cmd
+
+    - name: Postavi tag
       id: set_tag
       run: echo "RELEASE_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
       shell: bash
 
-    - name: Kreiranje GitHub Release-a i Upload fajla
+    - name: Kreiraj Release
       uses: softprops/action-gh-release@v2
       with:
         tag_name: ${{ steps.set_tag.outputs.RELEASE_TAG }}
-        name: IaaS Simulator ${{ steps.set_tag.outputs.RELEASE_TAG }} (Windows)
+        name: IaaS Simulator ${{ steps.set_tag.outputs.RELEASE_TAG }}
         body: |
-          Automatski kompajlirana Windows izvršna datoteka (.exe) za IaaS Simulator.
+          Dual-compiler Windows build
           
-          Izvršni fajl: IaasSimulator.exe
+          **MinGW version**: No dependencies (static linking)
+          **MSVC version**: Requires VC++ Redistributable
         files: |
-          IaasSimulator.exe
-        draft: false 
-        prerelease: false
+          IaasSimulator-mingw.exe
+          IaasSimulator-msvc.exe
+          README-release.txt
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

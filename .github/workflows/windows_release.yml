@@ -23,24 +23,8 @@ jobs:
 
     - name: Kompajliraj sa MSVC
       run: |
-        # Pokreni Visual Studio Command Prompt i kompajliraj
         call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
         cl /EHsc /std:c++17 /O2 /Fe:IaasSimulator-msvc.exe main.cpp
-      shell: cmd
-
-    - name: Kreiraj README
-      run: |
-        @echo # IaaS Simulator - Windows Build > README-release.txt
-        @echo. >> README-release.txt
-        @echo ## Dostupne verzije: >> README-release.txt
-        @echo. >> README-release.txt
-        @echo ### 1. IaasSimulator-mingw.exe >> README-release.txt
-        @echo - Kompajler: MinGW/G++ (statički linkovano) >> README-release.txt
-        @echo - Zavisnosti: NEMA - radi svuda >> README-release.txt
-        @echo. >> README-release.txt
-        @echo ### 2. IaasSimulator-msvc.exe >> README-release.txt
-        @echo - Kompajler: Microsoft Visual C++ >> README-release.txt
-        @echo - Zavisnosti: VC++ Redistributable >> README-release.txt
       shell: cmd
 
     - name: Postavi tag
